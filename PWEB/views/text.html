@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="./css/magnific-popup.css" rel="stylesheet">
+</head>
+<body>
+<a class="image-popup-vertical-fit" href="http://farm9.staticflickr.com/8241/8589392310_7b6127e243_b.jpg" title="Caption. Can be aligned to any side and contain any HTML.">
+</a>
+</body>
+<script src="./js/jquery-2.2.1.js"></script>
+<script src="./js/jquery.magnific-popup.js"></script>
+<script src="./js/jquery.magnific-popup.min.js"></script>
+<script>
+$(document).ready(function() {
+
+	$('.image-popup-vertical-fit').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		mainClass: 'mfp-img-mobile',
+		image: {
+			verticalFit: true
+		}
+		
+	});
+
+
+});
+</script>
+</html>

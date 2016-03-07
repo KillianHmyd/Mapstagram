@@ -7,7 +7,7 @@ create table users(
 
 create table picture(
 	idPicture INT not null AUTO_INCREMENT,
-	path Varchar(25),
+	filename Varchar(50),
 	login Varchar(25),
 	longitude DOUBLE,
 	latitude DOUBLE,

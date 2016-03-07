@@ -16,7 +16,6 @@ function setUser(login, password, callback){
 		}
 		else{
 			callback(data.message)
-			alert(data.message)
 		}
 	}).fail(function(xhr,textStatus,err)
 		{
@@ -33,6 +32,24 @@ function getUser(login, password, callback){
 		data: {
 			'login' : login, 
 			'password' : password
+			}
+	}).done(function(data){
+			callback(null, data)
+	}).fail(function(xhr,textStatus,err)
+		{
+			callback("readyState: " + xhr.readyState + " \n responseText: "+ xhr.responseText + 
+			"\n status: " + xhr.status + "\n text status: " + textStatus +"\n error: " + err);
+		})
+}
+
+function getUsers(token, username, callback){
+	$.ajax({
+		url: 'http://localhost:8282/api/user/search', 
+		type: 'GET', 
+		dataType: 'json',
+		headers: {'token' : token},
+		data: {
+			'username' : username 
 			}
 	}).done(function(data){
 			callback(null, data)

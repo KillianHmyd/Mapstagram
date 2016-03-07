@@ -1,5 +1,7 @@
 <?php
  include '/model/user.php';
+ include '/controler/friends.php';
+ include '/controler/picture.php';
  ?>
 <script>
 function signup() {
@@ -32,7 +34,8 @@ function signup() {
 			if(!err){
 				authenticateLog(login,password);
 			}else{
-				alert(err)
+				disconnect();
+				location.reload()
 			}
 		});
 	}
@@ -56,12 +59,12 @@ function authenticateLog(login, password){
 	if(good) {
 		getUser(login, password, function(err, data){
 			if(err){
-				alert("readyState: " + xhr.readyState + " \n responseText: "+ xhr.responseText + 
-				"\n status: " + xhr.status + "\n text status: " + textStatus +"\n error: " + err);
+				disconnect()
+				location.reload()
 			}
 			else{
 				$.ajax({
-					url: 'storesession.php', 
+					url: 'controler/storesession.php', 
 					type: 'POST', 
 					dataType: 'json',
 					data: {
@@ -73,8 +76,27 @@ function authenticateLog(login, password){
 					}
 				}).always(function(xhr,textStatus,err)
 				{
-					setSessionFriends(data.token);
-				});
+					setSessionFriends(data.token, 
+						function(err){
+							if(err){
+								disconnect()
+								location.reload()
+							}
+							else{
+								setSessionPictures(data.token, function(err){
+									if(err){
+										disconnect()
+										location.reload()
+									}
+									else{
+										setMarkers()
+										location.reload()
+									}
+								})
+							}
+						}
+					)
+				})
 			}
 		})
 		}
@@ -88,7 +110,7 @@ function authenticate(){
 
 function disconnect(){
 	$.ajax({
-			url: 'unsetsession.php', 
+			url: 'controler/unsetsession.php', 
 			type: 'GET'
 		}).always(function(xhr,textStatus,err)
 			{
@@ -96,30 +118,30 @@ function disconnect(){
 			});
 }
 
-function setSessionFriends(token){
+function getSessionUser(callback){
 	$.ajax({
-			url: 'http://localhost:8282/api/friend', 
-			type: 'GET', 
-			dataType: 'json',
-			headers: {
-				'token' : token
-			}
-	}).done(function(data){
-		$.ajax({
-				url: 'storesession.php', 
+			url: 'controler/getsession.php', 
 			type: 'POST', 
 			dataType: 'json',
 			data: {
-				'valeur' : data,
-				'variable' : 'friends'	
+				'variable' : 'user'	
 				}
-			}).always(function(data){
-			location.reload();
-		})
-			}).fail(function(xhr,textStatus,err)
-			{
-				alert("readyState: " + xhr.readyState + " \n responseText: "+ xhr.responseText + 
-				"\n status: " + xhr.status + "\n text status: " + textStatus +"\n error: " + err);
+			}).done(function(data){
+				callback(null, data)
+			})
+			.fail(function(data){
+				callback(data)
+			})
+}
+
+function search(token, username, callback){
+	getUsers(token, username, function(err, users){
+		if(err)
+			callback(err)
+		else{
+			callback(null, users)
+		}
 	})
 }
+
 </script>

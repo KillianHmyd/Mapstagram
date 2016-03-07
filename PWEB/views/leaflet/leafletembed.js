@@ -1,20 +1,24 @@
-var map;
 var ajaxRequest;
 var plotlist;
 var plotlayers=[];
 
-function initmap(longitude, latitude) {
+function initmap(longitude, latitude, callback) {
      // initialize the map
 
-  var map = L.map('map').setView([latitude,longitude], 13);
+  map = L.map('map').setView([latitude,longitude], 13);
 
   // load a tile layer
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: 'osmAttrib',
       maxZoom: 17,
-      minZoom: 9
+      minZoom: 2
     }).addTo(map);
+	
+	if(callback)
+		callback(null)
+	
+	
 }
 
 function handleError(error) {
