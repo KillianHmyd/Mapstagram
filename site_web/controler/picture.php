@@ -77,21 +77,15 @@ function sendpicture(){
         reader.readAsDataURL(file);
         reader.onload = function(e) {
             getSessionUser(function(errUser, dataUser){
-				if(errUser)
-					alert(JSON.stringify(errUser))
-				else{
+				if(!errUser){
 					if (navigator.geolocation) {
 						navigator.geolocation.getCurrentPosition(function(position){
 							var longitude = position.coords.longitude
 							var latitude = position.coords.latitude
 							setPicture(dataUser.token, e.target.result, longitude, latitude, function(errPicture){
-							if(errPicture)
-								alert(JSON.stringify(errPicture))
-							else
+							if(!errPicture)
 								initSession(function(err){
-									if(err)
-										alert(JSON.stringify(err))
-									else
+									if(!err)
 										location.reload()
 								})
 						})
@@ -102,7 +96,6 @@ function sendpicture(){
 					}
 				}
 			})
-            alert(e.target.result);
         };
     }
 }
