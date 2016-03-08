@@ -14,18 +14,20 @@
 			<div class="panel panel-default">
 					<div class="panel-heading"><center>Vos photos</center></div>
 					</div>
-					<center><button class="btn btn-primary" onClick="boxopen()">Ajouter photo</button></center>
-
+					<center><a class="btn btn-primary" id="modal_trigger2" href="#modal">Ajouter photo</a></center>
+					<br>
 					<?php
 					if(isset($_SESSION['pictures']) && is_array($_SESSION['pictures'])){
 						foreach($_SESSION['pictures'] as $picture){
 							if($picture['login'] == $_SESSION['user']['login']){
 							?>
-							<p><img src="http://localhost:8282/api/photo/<?php echo $picture['filename']; ?>"></p>
-							<hr>
+							<?php $url = "http://localhost:8282/api/photo/".$picture['filename'];
+									$img =file_get_contents($url);?>
+							<a href="javascript:moveMapToPicture(<?php echo $picture['longitude'].','.$picture['latitude']; ?>);"><img src=<?php echo ($img);?> height="42" width="42"></a>
+							
 						<?php }}
 					}
-					
+					?><hr><?php
 					if(isset($_SESSION['friends']) && is_array($_SESSION['friends'])){
 						foreach($_SESSION['friends'] as $friend){?>
 							<div class="panel panel-default">
@@ -37,13 +39,16 @@
 									if($picture['login'] == $friend['login2']){
 										
 							?>
-							<p><img src="http://localhost:8282/api/photo/<?php echo $picture['filename']; ?>"></p>
-							<hr>
+							<?php $url = "http://localhost:8282/api/photo/".$picture['filename'];
+									$img =file_get_contents($url);?>
+							<a href="javascript:moveMapToPicture(<?php echo $picture['longitude'].','.$picture['latitude']; ?>);"><img src=<?php echo ($img);?> height="42" width="42"></a>
 					<?php
 									}
 								}
 							}
+							?><hr><?php
 						}
+						
 					}
 					else{
 					?>

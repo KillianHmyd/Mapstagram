@@ -1,10 +1,19 @@
 <div id="modal" class="popupContainer" style="display:none;">
 	<header class="popupHeader">
-		<span class="header_title">Login</span>
+	<?php if(!isset($_SESSION['user'])){
+			echo('
+		<span class="header_title">Login</span>');
+	}
+		else{
+			echo('
+		<span class="header_title">Upload photo</span>');
+		}
+		?>
 	</header>
 	<section class="popupBody">		
 		<div class="social_login">
-			<div class="action_btns">
+			<?php if(!isset($_SESSION['user'])){
+			echo('<div class="action_btns">
 				<div class="one_half">
 					<a class="bouton" href="#" id="login_form" name="login_form">Login</a>
 				</div>
@@ -12,6 +21,18 @@
 					<a class="bouton" href="#" id="register_form" name="register_form">Sign up</a>
 				</div>
 			</div>
+			');
+			}
+			else{
+				echo('<form id="formPhoto" enctype="multipart/form-data" action="javascript:sendpicture();">
+					<input id="pictureToSend" name="photo" type="file">
+				</form>
+				<br>
+				<div class="one_half last">
+						<a class="bouton btn_red" onClick="event.preventDefault(); sendpicture();">Envoyer</a>
+
+					</div>');
+			}?>
 		</div>
 		
 		<div class="user_register">
