@@ -1,5 +1,5 @@
 <?php
-	include '/model/picture.php'
+	include '/model/picture.php';
 ?>
 
 <script>
@@ -43,24 +43,72 @@ function getSessionPictures(callback){
 
 function setMarkers(){
 	getSessionPictures(function(err, data){
-		//alert(JSON.stringify(data))
-		//map = L.map('map').setView([latitude,longitude], 13);
 		if(!err){
 			var marker;
 			for(var i = 0; i < data.length; i++){
 				var j = i
-				marker = L.marker([data[i].latitude, data[i].longitude]).on('click', function(e){
-					$.magnificPopup.open({
-						items: {
-							title: "Photo de " + data[j].login,
-							src: 'http://localhost:8282/api/photo/'+data[j].filename
-						},
-						type: 'image'
-					});
-				}).addTo(map);
+				var pictures = data
+				var nameFile = JSON.stringify(pictures[j].filename)
+				nameFile = nameFile.replace(/"/g,""); 
+				makePicture('http://localhost:8282/api/photo/'+nameFile, function(err, img){
+					if(!err){
+						marker = L.marker([pictures[j].latitude, pictures[j].longitude]).on('click', function(e){
+							$.magnificPopup.open({
+							items: {
+								title: "Photo de " + pictures[j].login,
+								src: img
+							},
+							type: 'image'
+							});
+						}).addTo(map);
+					}
+				})
+				
 			}
 		}
 	});
+}
+
+function sendpicture(){
+	var file = document.getElementById('pictureToSend').files[0];
+    if (file) {
+        // create reader
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            getSessionUser(function(errUser, dataUser){
+				if(errUser)
+					alert(JSON.stringify(errUser))
+				else{
+					if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(function(position){
+							var longitude = position.coords.longitude
+							var latitude = position.coords.latitude
+							setPicture(dataUser.token, e.target.result, longitude, latitude, function(errPicture){
+							if(errPicture)
+								alert(JSON.stringify(errPicture))
+							else
+								initSession(function(err){
+									if(err)
+										alert(JSON.stringify(err))
+									else
+										location.reload()
+								})
+						})
+						
+					})
+					} else { 
+						alert("Localisation non détécté")
+					}
+				}
+			})
+            alert(e.target.result);
+        };
+    }
+}
+
+function moveMapToPicture(longitude, latitude){
+	map.panTo(new L.LatLng(latitude, longitude));
 }
 
 </script>
