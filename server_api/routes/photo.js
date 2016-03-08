@@ -8,14 +8,32 @@ var multer = require('multer');
 module.exports= {
     route : function(router) {
         router.route('/photo').post(function(req, res){
-            if(/image\/*/.test(req.file.mimetype)) {
-                photo.addPicture(req.user.login, req.file.filename, req.body.longitude, req.body.latitude, function (err, result) {
-                    if (err)
-                        res.json(err)
-                    else {
-                        res.json({code: 201, message: "picture posted"})
-                    }
-                })
+            if(true) {
+                var fs = require('fs')
+                var hat = require('hat');
+                var nameFile = hat();
+                console.log(nameFile)
+                if(/^data:image\//.test(nameFile)) {
+                    fs.writeFile(__dirname + '/../views/img/' + nameFile, req.body.photo, function (err) {
+                        if (err) {
+                            console.log(err)
+                            res.json(err)
+                        }
+                        else {
+                            var picture =
+                                photo.addPicture(req.user.login, nameFile, req.body.longitude, req.body.latitude, function (err, result) {
+                                    if (err)
+                                        res.json(err)
+                                    else {
+                                        res.json({code: 201, message: "picture posted"})
+                                    }
+                                })
+                        }
+                    })
+                }
+                else{
+                    res.json({code: 415, message:"Invalid file"})
+                }
             }
             else{
                 var fs = require('fs')

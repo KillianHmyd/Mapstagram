@@ -16,10 +16,8 @@ var multer = require('multer');
 
 var userModel = require('./models/user.js');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(multer({dest:'./views/img/'}).single('photo'));
-
+app.use(bodyParser.urlencoded({ extended: true, limit: '900mb' }));
+app.use(bodyParser.json({limit: '900mb'}));
 
 app.set('view engine', 'html');
 app.engine('html', twig.__express);
@@ -32,6 +30,8 @@ router.use(function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, " +
         "Accept, X-Auth-Token, token");
     console.log(req.method + " - " +req.url)
+    console.log("BODY :")
+    console.log(req.body)
     if(req.url == "/authenticate" || (req.url == "/user" && req.method == "POST")
         || (/^\/photo\/.+/.test(req.url))){
         next();
