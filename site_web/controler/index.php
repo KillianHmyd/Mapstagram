@@ -6,14 +6,11 @@
 
 <script>
 $(function(){
-		    init();
-			
+	init();		
 })
 
 getSessionUser(function(err, dataUser){
-	if(err)
-		alert(err)
-	else{
+	if(!err){
 		$(".js-data-example-ajax").select2({
 	width: '400%',
 	ajax: {
@@ -88,13 +85,9 @@ var args = JSON.stringify(evt.params, function (key, value) {
 	var r = confirm("Ajouter "+args.data.name+" en ami?");
 	if (r == true) {
 		getSessionUser(function(err, user){
-			if(err)
-				alert(err)
-			else{
+			if(!err){
 				addFriend(user.token, args.data.name, function(err){
-						if(err)
-							alert(err)
-						else{
+						if(!err){
 							initSession(function(){
 								location.reload()
 							})
@@ -154,29 +147,21 @@ function init(){
 		initmap(2.333333,48.866667, initSession);
 	}
 	$("#modal_trigger").leanModal({});
+	$("#modal_trigger2").leanModal({});
 }
 
 function initSession(callback){
 	getSessionUser(function(errUser, dataUser){
-		if(errUser){
-					alert(errUser)
-					disconnect()
-					location.reload()
-				}
-		if(dataUser.code != 404){
+		if(dataUser.code != 404 && !errUser){
 			var token = dataUser.token
 			setSessionFriends(token, function(errFriends, dataFriends){
 				if(errFriends){
-					alert(errFriends)
 					disconnect()
-					location.reload()
 				}
 				else{
 					setSessionPictures(token, function(errPictures){
 						if(errPictures){
-							alert(errPictures)
 							disconnect()
-							location.reload()
 						}
 						else{
 							setMarkers()
