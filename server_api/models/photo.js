@@ -29,5 +29,21 @@ module.exports = {
             else
                 callback(null, rows);
         })
+    },
+
+    deletePicture : function(filename, login, callback){
+        var sql = "DELETE FROM picture WHERE login = ? AND filename = ?";
+        var inserts = [login, filename];
+        sql = mysql.format(sql, inserts);
+        connection.query(sql, function(err, rows){
+            console.log(err)
+            if(rows.affectedRows <= 0){
+                callback({code: 404, message: "No picture found"});
+            }
+            else if(err)
+                callback({code:500,message:err.code});
+            else
+                callback(null, rows);
+        })
     }
 }

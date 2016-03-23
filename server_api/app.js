@@ -30,8 +30,6 @@ router.use(function(req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, " +
         "Accept, X-Auth-Token, token");
     console.log(req.method + " - " +req.url)
-    console.log("BODY :")
-    console.log(req.body)
     if(req.url == "/authenticate" || (req.url == "/user" && req.method == "POST")
         || (/^\/photo\/.+/.test(req.url))){
         next();
