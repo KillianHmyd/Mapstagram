@@ -16,6 +16,25 @@ function getPictures(token, callback){
 	})
 }
 
+function deletePicture(token, filename, callback){
+	$.ajax({
+		url: 'http://localhost:8282/api/photo',
+		type: 'DELETE',
+		dataType: 'json',
+		headers: {
+			'token' : token
+		},
+		data: {
+			'filename' : filename
+		}
+	}).done(function(data){
+		callback(null, data);
+	}).fail(function(xhr,textStatus,err)
+	{
+		callback(err)
+	})
+}
+
 function makePicture(url, callback){
 	$.ajax({
 			url: url, 

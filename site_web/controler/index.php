@@ -148,6 +148,20 @@ function init(){
 	}
 	$("#modal_trigger").leanModal({});
 	$("#modal_trigger2").leanModal({});
+
+	$.contextMenu({
+		selector: '.context-menu-one',
+		callback: function(key, options) {
+			controlDeletePicture($(this).attr("filename"))
+		},
+		items: {
+			"delete": {name: "Supprimer", icon: "delete"}
+		}
+	});
+
+	$('.context-menu-one').on('click', function(e){
+		console.log('clicked', this);
+	})
 }
 
 function initSession(callback){

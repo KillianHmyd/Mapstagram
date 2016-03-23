@@ -69,6 +69,21 @@ function setMarkers(){
 	});
 }
 
+function controlDeletePicture(filename){
+	getSessionUser(function(errUser, dataUser){
+		if(!errUser)
+			deletePicture(dataUser.token, filename, function(errPicture, dataPicture){
+				if(!errPicture){
+					initSession(function(err){
+						if(!err)
+							location.reload()
+					})
+				}
+
+			})
+		})
+}
+
 function sendpicture(){
 	var file = document.getElementById('pictureToSend').files[0];
     if (file) {
