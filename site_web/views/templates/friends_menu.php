@@ -23,7 +23,7 @@
 							?>
 							<?php $url = "http://localhost:8282/api/photo/".$picture['filename'];
 									$img =file_get_contents($url);?>
-							<a href="javascript:moveMapToPicture(<?php echo $picture['longitude'].','.$picture['latitude']; ?>);"><img src=<?php echo ($img);?> height="42" width="42"></a>
+							<a class="context-menu-one btn btn-neutral" filename="<?php echo ($picture['filename']);?>" href="javascript:moveMapToPicture(<?php echo $picture['longitude'].','.$picture['latitude']; ?>);"><img src=<?php echo ($img);?> height="42" width="42"></a>
 							
 						<?php }}
 					}

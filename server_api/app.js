@@ -27,6 +27,7 @@ var path = '/api';
 router.use(function(req, res, next){
     res.setHeader("Content-Type", "text/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, " +
         "Accept, X-Auth-Token, token");
     console.log(req.method + " - " +req.url)

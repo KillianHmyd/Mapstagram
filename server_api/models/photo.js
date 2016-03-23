@@ -36,7 +36,6 @@ module.exports = {
         var inserts = [login, filename];
         sql = mysql.format(sql, inserts);
         connection.query(sql, function(err, rows){
-            console.log(err)
             if(rows.affectedRows <= 0){
                 callback({code: 404, message: "No picture found"});
             }

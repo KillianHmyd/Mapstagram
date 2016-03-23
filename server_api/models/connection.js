@@ -4,9 +4,9 @@
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
     host     : 'localhost',
-    user     : 'USER',
-    password : 'PASSWORD',
-    database : 'DATABASE_NAME'
+    user     : 'killian',
+    password : 'kiki2010',
+    database : 'PWEB'
 });
 
 module.exports = connection;
